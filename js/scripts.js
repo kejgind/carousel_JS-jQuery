@@ -56,11 +56,11 @@ $(document).ready(function(){
 
   // przesuwanie slajdów po kliknięciu na strzałkę
   function moveSlideBackwards (){
-    carouselList.animate({'marginLeft':marginZero}, animationTime, moveLastSlide);
+    moveLastSlide();
+    carouselList.animate({'marginLeft':marginZero}, animationTime);
   }
 
   $('.fa-chevron-left').on('click', function(){
-    moveLastSlide();
     moveSlideBackwards();
   });
 
