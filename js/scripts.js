@@ -6,20 +6,25 @@ $(document).ready(function(){
   // deklaracja zmiennych
   var carouselList = $('#carousel ul');
 
-  var imgPause = 3000;
-  var animationTime = 1200;
+  // ustawienie czasu wyświetlania obrazka oraz czasu animacji przejścia
+  var imgPause = 2000;
+  var animationTime = 1000;
 
+  // określenie wartości dla przesuwania galerii obrazków
   var marginZero = 0;
   var marginOne = 800; // wartość równa przyjętej w CSS szerokości obrazka
 
+  // wyliczenie długości całej listy w zależności od ilości zdjęć
+  var galleryImagesCount = $('#carousel li').length;
+  var galleryLength = galleryImagesCount * marginOne;
+  console.log(galleryImagesCount, galleryLength);
+
+  // zdefiniowanie indexu wyświetlanego obecnia obrazka z galerii
+  var displayedImageIndex = 0;
+
   var firstItem;
   var lastItem;
-
   var interval;
-
-  // wyliczenie długości całej listy w zależności od ilości zdjęć
-  var galleryLength = $('ul').width($('ul').find('li').length * marginOne);
-  console.log(galleryLength);
 
   // przesunięcie obrazka w lewo
   var moveFirstSlide = function(){
@@ -40,6 +45,14 @@ $(document).ready(function(){
   // automatyczna zmiana zdjęcia
   function moveSlideForward (){
     carouselList.animate({'marginLeft':'-='+marginOne}, animationTime, moveFirstSlide);
+    // sprawdzanie i ustawianie nr wyświetlanego obrazka przy zmianie obrazka w przód
+    if ((displayedImageIndex + 1) % galleryImagesCount !== 0){
+      displayedImageIndex++;
+    } else {
+      displayedImageIndex = 0;
+    };
+    changeBulletIcon();
+    console.log(displayedImageIndex);
   }
 
   function autoAnimation(){
@@ -54,12 +67,23 @@ $(document).ready(function(){
 
   $('#carousel').on('mouseenter', stopAutoAnimation).on('mouseleave', autoAnimation);
 
-  // przesuwanie slajdów po kliknięciu na strzałkę
+  // przesuwanie slajdów wstecz
   function moveSlideBackwards (){
     moveLastSlide();
     carouselList.animate({'marginLeft':marginZero}, animationTime);
+    // sprawdzanie i ustawianie nr wyświetlanego obrazka przy zmianie obrazka w tył
+    if ((displayedImageIndex + 1) % galleryImagesCount === 0){
+      displayedImageIndex--;
+    } else if (displayedImageIndex > 0){
+      displayedImageIndex--;
+    } else {
+      displayedImageIndex = (galleryImagesCount - 1);
+    };
+    changeBulletIcon();
+    console.log(displayedImageIndex);
   }
 
+  // przesuwanie slajdów po kliknięciu na strzałkę
   $('.fa-chevron-left').on('click', function(){
     moveSlideBackwards();
   });
@@ -67,5 +91,10 @@ $(document).ready(function(){
   $('.fa-chevron-right').on('click', function(){
     moveSlideForward();
   });
+
+  // wskazanie (na liście kropek) aktualnie wyświetlanego zdjęcia
+  function changeBulletIcon(){
+    $('i.bullet').removeClass('fa-circle').addClass('fa-circle-thin').eq(displayedImageIndex).removeClass('fa-circle-thin').addClass('fa-circle');
+  };
 
 });

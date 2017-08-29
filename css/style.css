@@ -41,6 +41,7 @@ li {
 }
 
 .carousel-selected {
+  cursor: default;
   position: absolute;
     bottom: 3%;
   width: 100%;
