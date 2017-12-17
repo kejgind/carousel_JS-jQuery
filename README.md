@@ -1,2 +1,3 @@
-# kodilla_10.3
+# carousel_JS-jQuery
+
 jQuery - karuzela
