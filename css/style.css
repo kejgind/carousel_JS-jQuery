@@ -24,7 +24,7 @@ h1 {
   display: flex;
   height: 600px;
   margin-top: 40px;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: relative;
   width: 800px;
 }
@@ -40,7 +40,7 @@ li {
   width: 800px;
 }
 
-.carousel-selected {
+.carousel-bullets {
   cursor: default;
   position: absolute;
     bottom: 3%;
