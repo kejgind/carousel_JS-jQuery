@@ -28,12 +28,11 @@ const bulletsGlobal = addBullets(
   elementsFromDOM.bulletsContainer
 );
 
-console.log(bulletsGlobal);
-
 // set things that can be altered
 const configuration = {
   imgDisplayTime: 2000, // set duration to 2 seconds
   animationTime: 1000, // set animation duration to 1 sec
+  easing: "ease-out", // set easing options
 };
 
 const otherSettings = {
@@ -44,30 +43,30 @@ const otherSettings = {
   isAnimating: false,
 };
 
+// get image gallery length (sum of all images width)
 const galleryLength =
   otherSettings.endPosition * otherSettings.galleryImagesCount;
 
-const moveSlideLeft = () => {
+const showNextImage = () => {
   let gallery = elementsFromDOM.galleryImages;
   let elList = elementsFromDOM.carouselList;
-  elList.style.marginLeft = `${-otherSettings.endPosition}px`;
   const firstElem = gallery.shift();
   elList.removeChild(firstElem);
-  elList.style.marginLeft = `${otherSettings.startPosition}px`;
+  elList.style.left = `${otherSettings.startPosition}px`;
   gallery.push(firstElem);
   elList.insertAdjacentElement("beforeend", firstElem);
   setActiveBullet(gallery[0].classList[0]);
   return gallery;
 };
 
-const moveSlideRight = () => {
+const showPrevImage = () => {
   let gallery = elementsFromDOM.galleryImages;
   let elList = elementsFromDOM.carouselList;
   const lastElem = gallery.pop();
   elList.removeChild(lastElem);
   gallery.unshift(lastElem);
   elList.insertAdjacentElement("afterbegin", lastElem);
-  elList.style.marginLeft = `${otherSettings.startPosition}px`;
+  elList.style.left = `${otherSettings.startPosition}px`;
   setActiveBullet(gallery[0].classList[0]);
   return gallery;
 };
@@ -83,7 +82,30 @@ const setActiveBullet = currentImage => {
   bullet.classList.add("fa-circle");
 };
 
+const moveToSelectedBullet = selectedBullet => {
+  const bullets = bulletsGlobal;
+  const activeBullet = bullets.filter(el =>
+    el.classList.contains("fa-circle")
+  )[0];
+  const activeIdx = bullets.indexOf(activeBullet);
+  const selectedIdx = bullets.indexOf(selectedBullet);
+  const sumOne = selectedIdx - activeIdx;
 
+  if (sumOne === 0) {
+    return;
+  } else if (sumOne > 0) {
+    [...Array(Math.abs(sumOne))].map(i => {
+      showNextImage();
+    });
+  } else if (sumOne < 0) {
+    [...Array(Math.abs(sumOne))].map(i => {
+      showPrevImage();
+    });
+  }
+};
 
-elementsFromDOM.prevSlide.addEventListener("click", moveSlideLeft);
-elementsFromDOM.nextSlide.addEventListener("click", moveSlideRight);
+elementsFromDOM.prevSlide.addEventListener("click", showPrevImage);
+elementsFromDOM.nextSlide.addEventListener("click", showNextImage);
+elementsFromDOM.bulletsContainer.addEventListener("click", e => {
+  e.target.classList.contains("bullet") ? moveToSelectedBullet(e.target) : "";
+});
