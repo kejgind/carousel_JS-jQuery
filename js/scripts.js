@@ -30,7 +30,7 @@ const bulletsGlobal = addBullets(
 
 // set things that can be altered
 const configuration = {
-  imgDisplayTime: 2000, // set duration to 2 seconds
+  imgDisplayTime: 4000, // set duration to 2 seconds
   animationTime: 1000, // set animation duration to 1 sec
   easing: "ease-out", // set easing options
 };
@@ -50,9 +50,10 @@ const galleryLength =
 const showNextImage = () => {
   let gallery = elementsFromDOM.galleryImages;
   let elList = elementsFromDOM.carouselList;
+  elList.style.marginLeft = `-${otherSettings.endPosition}px`;
   const firstElem = gallery.shift();
   elList.removeChild(firstElem);
-  elList.style.left = `${otherSettings.startPosition}px`;
+  elList.style.marginLeft = `${otherSettings.startPosition}px`;
   gallery.push(firstElem);
   elList.insertAdjacentElement("beforeend", firstElem);
   setActiveBullet(gallery[0].classList[0]);
@@ -66,10 +67,16 @@ const showPrevImage = () => {
   elList.removeChild(lastElem);
   gallery.unshift(lastElem);
   elList.insertAdjacentElement("afterbegin", lastElem);
-  elList.style.left = `${otherSettings.startPosition}px`;
+  elList.style.marginLeft = `${otherSettings.startPosition}px`;
   setActiveBullet(gallery[0].classList[0]);
   return gallery;
 };
+
+{
+  setInterval(() => {
+    showNextImage();
+  }, configuration.imgDisplayTime);
+}
 
 const setActiveBullet = currentImage => {
   const bullets = bulletsGlobal;
