@@ -1,3 +1,3 @@
-# carousel_JS-jQuery
+# Carousel with JavaScript
 
-jQuery - karuzela
+Carousel written in vanilla JavaScript.
