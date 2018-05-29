@@ -30,7 +30,7 @@ const bulletsGlobal = addBullets(
 
 // set things that can be altered
 const configuration = {
-  imgDisplayTime: 4000, // set duration to 2 seconds
+  imgDisplayTime: 3000, // set duration to 3 seconds
   animationTime: 1000, // set animation duration to 1 sec
   easing: "ease-out", // set easing options
 };
